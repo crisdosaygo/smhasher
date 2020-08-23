@@ -10,58 +10,58 @@ Running AppendedZeroesTest .......... PASS
 [[[ Speed Tests ]]]
 
 Bulk speed test - 262144-byte keys
-Alignment  7 -  0.488 bytes/cycle - 1396.78 MiB/sec @ 3 ghz
-Alignment  6 -  0.488 bytes/cycle - 1396.74 MiB/sec @ 3 ghz
-Alignment  5 -  0.488 bytes/cycle - 1396.73 MiB/sec @ 3 ghz
-Alignment  4 -  0.488 bytes/cycle - 1396.94 MiB/sec @ 3 ghz
-Alignment  3 -  0.488 bytes/cycle - 1396.79 MiB/sec @ 3 ghz
-Alignment  2 -  0.488 bytes/cycle - 1396.74 MiB/sec @ 3 ghz
-Alignment  1 -  0.488 bytes/cycle - 1396.74 MiB/sec @ 3 ghz
-Alignment  0 -  0.488 bytes/cycle - 1396.95 MiB/sec @ 3 ghz
-Average      -  0.488 bytes/cycle - 1396.80 MiB/sec @ 3 ghz
+Alignment  7 -  0.488 bytes/cycle - 1396.71 MiB/sec @ 3 ghz
+Alignment  6 -  0.488 bytes/cycle - 1396.68 MiB/sec @ 3 ghz
+Alignment  5 -  0.488 bytes/cycle - 1396.67 MiB/sec @ 3 ghz
+Alignment  4 -  0.488 bytes/cycle - 1396.90 MiB/sec @ 3 ghz
+Alignment  3 -  0.488 bytes/cycle - 1396.69 MiB/sec @ 3 ghz
+Alignment  2 -  0.488 bytes/cycle - 1396.68 MiB/sec @ 3 ghz
+Alignment  1 -  0.488 bytes/cycle - 1396.66 MiB/sec @ 3 ghz
+Alignment  0 -  0.488 bytes/cycle - 1396.89 MiB/sec @ 3 ghz
+Average      -  0.488 bytes/cycle - 1396.74 MiB/sec @ 3 ghz
 
-Small key speed test -    1-byte keys -    40.36 cycles/hash
+Small key speed test -    1-byte keys -    41.81 cycles/hash
 Small key speed test -    2-byte keys -    40.00 cycles/hash
 Small key speed test -    3-byte keys -    40.00 cycles/hash
-Small key speed test -    4-byte keys -    47.16 cycles/hash
-Small key speed test -    5-byte keys -    45.96 cycles/hash
-Small key speed test -    6-byte keys -    45.95 cycles/hash
-Small key speed test -    7-byte keys -    44.99 cycles/hash
-Small key speed test -    8-byte keys -    52.82 cycles/hash
-Small key speed test -    9-byte keys -    52.43 cycles/hash
-Small key speed test -   10-byte keys -    51.97 cycles/hash
+Small key speed test -    4-byte keys -    47.59 cycles/hash
+Small key speed test -    5-byte keys -    47.00 cycles/hash
+Small key speed test -    6-byte keys -    45.00 cycles/hash
+Small key speed test -    7-byte keys -    44.85 cycles/hash
+Small key speed test -    8-byte keys -    52.54 cycles/hash
+Small key speed test -    9-byte keys -    52.00 cycles/hash
+Small key speed test -   10-byte keys -    51.00 cycles/hash
 Small key speed test -   11-byte keys -    51.00 cycles/hash
-Small key speed test -   12-byte keys -    60.00 cycles/hash
-Small key speed test -   13-byte keys -    59.00 cycles/hash
-Small key speed test -   14-byte keys -    58.95 cycles/hash
+Small key speed test -   12-byte keys -    59.00 cycles/hash
+Small key speed test -   13-byte keys -    58.99 cycles/hash
+Small key speed test -   14-byte keys -    58.00 cycles/hash
 Small key speed test -   15-byte keys -    58.00 cycles/hash
-Small key speed test -   16-byte keys -    66.28 cycles/hash
-Small key speed test -   17-byte keys -    66.00 cycles/hash
-Small key speed test -   18-byte keys -    65.00 cycles/hash
-Small key speed test -   19-byte keys -    65.60 cycles/hash
-Small key speed test -   20-byte keys -    73.29 cycles/hash
-Small key speed test -   21-byte keys -    73.00 cycles/hash
-Small key speed test -   22-byte keys -    73.00 cycles/hash
+Small key speed test -   16-byte keys -    66.00 cycles/hash
+Small key speed test -   17-byte keys -    68.58 cycles/hash
+Small key speed test -   18-byte keys -    65.96 cycles/hash
+Small key speed test -   19-byte keys -    65.97 cycles/hash
+Small key speed test -   20-byte keys -    73.45 cycles/hash
+Small key speed test -   21-byte keys -    73.45 cycles/hash
+Small key speed test -   22-byte keys -    73.12 cycles/hash
 Small key speed test -   23-byte keys -    73.00 cycles/hash
-Small key speed test -   24-byte keys -    81.00 cycles/hash
-Small key speed test -   25-byte keys -    81.00 cycles/hash
+Small key speed test -   24-byte keys -    81.50 cycles/hash
+Small key speed test -   25-byte keys -    81.43 cycles/hash
 Small key speed test -   26-byte keys -    81.00 cycles/hash
-Small key speed test -   27-byte keys -    81.00 cycles/hash
-Small key speed test -   28-byte keys -    89.52 cycles/hash
-Small key speed test -   29-byte keys -    89.00 cycles/hash
-Small key speed test -   30-byte keys -    89.00 cycles/hash
+Small key speed test -   27-byte keys -    81.14 cycles/hash
+Small key speed test -   28-byte keys -    89.92 cycles/hash
+Small key speed test -   29-byte keys -    89.92 cycles/hash
+Small key speed test -   30-byte keys -    89.51 cycles/hash
 Small key speed test -   31-byte keys -    89.00 cycles/hash
-Average                                    64.009 cycles/hash
+Average                                    64.184 cycles/hash
 
 [[[ 'Hashmap' Speed Tests ]]]
 
 std::unordered_map
-Init std HashMapTest:     811.002 cycles/op (479826 inserts, 1% deletions)
-Running std HashMapTest:  648.623 cycles/op (31.5 stdv)
+Init std HashMapTest:     530.274 cycles/op (102774 inserts, 1% deletions)
+Running std HashMapTest:  383.018 cycles/op (19.5 stdv)
 
 greg7mdp/parallel-hashmap
-Init fast HashMapTest:    779.634 cycles/op (479826 inserts, 1% deletions)
-Running fast HashMapTest: 512.417 cycles/op (7.0 stdv)  ....... PASS
+Init fast HashMapTest:    278.986 cycles/op (102774 inserts, 1% deletions)
+Running fast HashMapTest: 245.582 cycles/op (14.3 stdv)  ....... PASS
 
 [[[ Avalanche Tests ]]]
 
@@ -570,13 +570,15 @@ Testing collisions (low  12-bit) - Expected    3995904.0, actual 3995904 (1.00x)
 Testing collisions (low   8-bit) - Expected    3999744.0, actual 3999744 (1.00x)
 Testing distribution - Worst bias is the 19-bit window at bit 21 - 0.044%
 
-Keyset 'Words' - 479826 dict words
-Testing collisions ( 32-bit) - Expected   26.8, actual     23 (0.86x)
-Testing collisions (high 12-bit) - Expected     475730.0, actual 475730 (1.00x)
-Testing collisions (high  8-bit) - Expected     479570.0, actual 479570 (1.00x)
-Testing collisions (low  12-bit) - Expected     475730.0, actual 475730 (1.00x)
-Testing collisions (low   8-bit) - Expected     479570.0, actual 479570 (1.00x)
-Testing distribution - Worst bias is the 16-bit window at bit 29 - 0.207%
+Keyset 'Words' - 102774 dict words
+Testing collisions ( 32-bit) - Expected    1.2, actual      2 (1.63x) (1)
+Testing collisions (high 20-27 bits) - Worst is 25 bits: 159/157 (1.01x)
+Testing collisions (high 12-bit) - Expected      98678.0, actual  98678 (1.00x)
+Testing collisions (high  8-bit) - Expected     102518.0, actual 102518 (1.00x)
+Testing collisions (low  20-27 bits) - Worst is 27 bits: 39/39 (0.99x)
+Testing collisions (low  12-bit) - Expected      98678.0, actual  98678 (1.00x)
+Testing collisions (low   8-bit) - Expected     102518.0, actual 102518 (1.00x)
+Testing distribution - Worst bias is the 14-bit window at bit 18 - 0.339%
 
 
 [[[ Keyset 'Zeroes' Tests ]]]
@@ -1103,5 +1105,5 @@ The PRNG test is designed for hashes >= 64-bit
 
 
 Input vcode 0x00000001, Output vcode 0x00000001, Result vcode 0x00000001
-Verification value is 0x00000001 - Testing took 940.299157 seconds
+Verification value is 0x00000001 - Testing took 1173.517884 seconds
 -------------------------------------------------------------------------------

@@ -2,20 +2,48 @@
 
 #include <stdint.h>
 #if defined(__aarch64__)
-#include "sse2neon.h"
+#  include "sse2neon.h"
+#elif defined __GNUC__ && defined __MINGW32__
+// drop always_inline on mingw gcc 11
+extern __inline unsigned int __attribute__((__gnu_inline__, __artificial__))
+_mm_crc32_u8 (unsigned int __C, unsigned char __V)
+{
+  return __builtin_ia32_crc32qi (__C, __V);
+}
+extern __inline unsigned int __attribute__((__gnu_inline__, __artificial__))
+_mm_crc32_u16 (unsigned int __C, unsigned short __V)
+{
+  return __builtin_ia32_crc32hi (__C, __V);
+}
+extern __inline unsigned int __attribute__((__gnu_inline__, __artificial__))
+_mm_crc32_u32 (unsigned int __C, unsigned int __V)
+{
+  return __builtin_ia32_crc32si (__C, __V);
+}
+#  ifdef __x86_64__
+extern __inline unsigned long long __attribute__((__gnu_inline__, __artificial__))
+_mm_crc32_u64 (unsigned long long __C, unsigned long long __V)
+{
+  return __builtin_ia32_crc32di (__C, __V);
+}
+#  endif
 #else
-#include <smmintrin.h>
+#  include <smmintrin.h>
 #endif
 
 // Byte-boundary alignment issues
-#define ALIGN_SIZE      0x08UL
-#define ALIGN_MASK      (ALIGN_SIZE - 1)
-#define CALC_CRC(op, crc, type, buf, len)                               \
-  do {                                                                  \
-    for (; (len) >= sizeof (type); (len) -= sizeof(type), buf += sizeof (type)) { \
-      (crc) = op((crc), *(type *) (buf));                               \
-    }                                                                   \
-  } while(0)
+#  define ALIGN_SIZE 0x08UL
+#  define ALIGN_MASK (ALIGN_SIZE - 1)
+#  define CALC_CRC(op, crc, type, buf, len)                                   \
+    do                                                                        \
+      {                                                                       \
+        for (; (len) >= sizeof (type);                                        \
+             (len) -= sizeof (type), buf += sizeof (type))                    \
+          {                                                                   \
+            (crc) = op ((crc), *(type *)(buf));                               \
+          }                                                                   \
+      }                                                                       \
+    while (0)
 
 
 /* Compute CRC-32C using the Intel hardware instruction. */
@@ -34,9 +62,9 @@ uint32_t crc32c_hw(const void *input, int len, uint32_t crc)
     }
 
     // Blast off the CRC32 calculation
-#if defined(__x86_64__) || defined(__aarch64__)
+#  if defined(__x86_64__) || defined(__aarch64__)
     CALC_CRC(_mm_crc32_u64, crc, uint64_t, buf, len);
-#endif
+#  endif
     CALC_CRC(_mm_crc32_u32, crc, uint32_t, buf, len);
     CALC_CRC(_mm_crc32_u16, crc, uint16_t, buf, len);
     CALC_CRC(_mm_crc32_u8, crc, uint8_t, buf, len);
@@ -56,9 +84,9 @@ uint64_t crc64c_hw(const void *input, int len, uint32_t seed)
     }
 
     // Blast off the CRC32 calculation
-#if defined(__x86_64__) || defined(__aarch64__)
+#  if defined(__x86_64__) || defined(__aarch64__)
     CALC_CRC(_mm_crc32_u64, crc, uint64_t, buf, len);
-#endif
+#  endif
     CALC_CRC(_mm_crc32_u32, crc, uint32_t, buf, len);
     CALC_CRC(_mm_crc32_u16, crc, uint16_t, buf, len);
     CALC_CRC(_mm_crc32_u8, crc, uint8_t, buf, len);

@@ -7,10 +7,9 @@
 #include <iostream>
 #include "discohash.h"
 
-constexpr int STATE = 64;
-constexpr int XSTATE = 32;
-constexpr int STATEM = XSTATE-1;
-constexpr int STATE64 = XSTATE >> 3;
+constexpr int STATE = 32;
+constexpr int STATEM = STATE-1;
+constexpr int STATE64 = STATE >> 3;
 constexpr int HSTATE64 = STATE64 >> 1;
 constexpr int STATE64M = STATE64-1;
 constexpr int HSTATE64M = HSTATE64-1;
@@ -19,15 +18,6 @@ constexpr uint64_t P = 0xFFFFFFFFFFFFFFFF - 58;
 constexpr uint64_t Q = 13166748625691186689U;
 alignas(uint64_t) uint8_t *ds8 = (uint8_t *)disco_buf;
 uint64_t *ds = (uint64_t *)disco_buf;
-
-  static inline void log() 
-  {
-    return;
-    for (int i = 0; i < STATE64; i++) {
-        std::cout << "ds[" << i << "] = " << std::hex << ds[i] << ", ";
-    }
-    std::cout << std::endl;
-  }
 
   static inline uint64_t rot( uint64_t v, int n) 
   {
@@ -67,14 +57,13 @@ uint64_t *ds = (uint64_t *)disco_buf;
     uint8_t counter8 = 137;
 
     for( int Len = len >> 3; index < Len; index++) {
-      log();
       ds[sindex] += rot(m64[index] + index + counter + 1, 23);
       counter += ~m64[index] + 1;
       if ( sindex == HSTATE64M ) {
-        mix(0);
+        mix(HSTATE64M-1);
         sindex++;
       } else if ( sindex == STATE64M ) {
-        mix(HSTATE64);
+        mix(STATE64M-1);
         sindex = 0;
       } else {
         sindex++;
@@ -82,17 +71,10 @@ uint64_t *ds = (uint64_t *)disco_buf;
     }
 
     mix(1);
-    if ( STATE == 64 ) {
-      mix(3);
-      mix(5);
-    }
-
-    log();
 
     index <<= 3;
     sindex = index&(STATEM);
     for( ; index < len; index++) {
-      log();
       ds8[sindex] += rot8(m8[index] + index + counter8 + 1, 23);
       counter8 += ~m8[index] + 1;
       mix(index%STATE64M);
@@ -103,21 +85,9 @@ uint64_t *ds = (uint64_t *)disco_buf;
       }
     }
 
-    if ( STATE == 64 ) {
-      mix(3);
-
-      mix(2);
-      mix(1);
-      mix(0);
-
-      mix(4);
-      mix(5);
-      mix(6);
-    } else {
-      mix(0);
-      mix(1);
-      mix(2);
-    }
+    mix(0);
+    mix(1);
+    mix(2);
   }
 
   void DISCoHAsH_64 ( const void * key, int len, unsigned seed, void * out )
@@ -146,14 +116,6 @@ uint64_t *ds = (uint64_t *)disco_buf;
     ds[1] = 0x0fedcba987654321;
     ds[2] = 0xaccadacca80081e5;
     ds[3] = 0xf00baaf00f00baaa;
-    if ( STATE == 64 ) {
-      ds[4] = 0xbeefdeadbeefc0de;
-      ds[5] = 0xabad1deafaced00d;
-      ds[6] = 0xfaceb00cfacec0de;
-      ds[7] = 0xdeadc0dedeadbeef;
-    }
-
-    log();
 
     memcpy(tempBuf, key, len);
     uint64_t* temp64 = reinterpret_cast<uint64_t*>(tempBuf);
@@ -162,44 +124,13 @@ uint64_t *ds = (uint64_t *)disco_buf;
     round( seed64Arr, seed8Arr, 16 );
     round( ds, ds8, STATE );
 
-    log();
+    // 256-bit internal state 64-bit output
+    uint64_t h[1] = {0}; 
 
+    h[0] -= ds[2];
+    h[0] -= ds[3];
 
-    // 512-bit internal state 256-bit output
-    uint64_t h[4] = {0}; // This will hold the final 256-bit output
-
-    if ( STATE == 64 ) {
-      h[0] -= ds[2];
-      h[0] -= ds[3];
-
-      h[1] = ds[4] ^ ds[5];
-
-      h[2] -= ds[0];
-      h[2] -= ds[1];
-
-      h[3] = ds[6] ^ ds[7];
-    } else {
-      // 256-bit internal state
-      h[1] = ds[3] ^ ds[2];
-      h[3] = ds[1] ^ ds[0];
-
-      // subtraction here (discohash v2) more readily mixes the bits than addition, 
-      // achieves non-compressibility (using gzip -9) and maintains the statistical properties
-      // (smhasher quality tests) of discohash v1
-      h[0] -= ds[2];
-      h[0] -= ds[3];
-      h[2] -= ds[0];
-      h[2] -= ds[1];
-    }
-
-    /*
-      // 64-bit output
-      uint64_t h[1] = {0};
-      h[0] -= ds[2];
-      h[0] -= ds[3];
-    */
-
-    memcpy(out, h, sizeof(h)/4);  // divide by 4 as smhasher only uses 64 bits
+    memcpy(out, h, sizeof(h));  // divide by 4 as smhasher only uses 64 bits
 
     delete[] tempBuf;
   }
